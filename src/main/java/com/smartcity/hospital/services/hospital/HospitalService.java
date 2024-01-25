@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 import com.smartcity.hospital.dao.CitizenDao;
 import com.smartcity.hospital.dao.HospitalDao;
 import com.smartcity.hospital.helper.HospitalResponse;
@@ -93,8 +94,13 @@ public class HospitalService {
         }
     }
 
-    public ResponseEntity<?> getHospitals() {
+    public ResponseEntity<?> getHospitals(String authorization) {
         try {
+        	String email = jwtUtil.extractUsername(authorization.substring(7));
+        	if (citizenDao.getCitizenByemail(email)==null) {
+        		responseMessage.setMessage("Forbidden...");
+        		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
+        	}
             List<Hospital> list = (List<Hospital>)hospitalDao.findAll();
             List<HospitalResponse> response = new ArrayList<>();
             for (int i=0;i<list.size();i++){

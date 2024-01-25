@@ -36,7 +36,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/email/{id}","/citizen","/citizen/{email}/{password}","/admin","/admin/{email}/{password}","/user","/swagger-resources/**","/swagger-ui/**","/swagger-ui/index.html","/v2/api-docs","/v3/api-docs","/v3/api-docs/**").permitAll() //one doubt of image returning
+                .antMatchers("/email/{id}","/citizen","/citizen/{email}/{password}","/admin","/admin/{email}/{password}","/user","/hospital","/swagger-resources/**","/swagger-ui/**","/swagger-ui/index.html","/v2/api-docs","/v3/api-docs","/v3/api-docs/**").permitAll() //one doubt of image returning
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

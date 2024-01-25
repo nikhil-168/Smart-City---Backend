@@ -56,9 +56,9 @@ public class HospitalController {
     }
     
     @GetMapping("/hospital")
-    public ResponseEntity<?> getHospitals() {
+    public ResponseEntity<?> getHospitals(@RequestHeader("Authorization") String authorization) {
         try {
-            return hospitalService.getHospitals();
+            return hospitalService.getHospitals(authorization);
         } catch (Exception e) {
             e.printStackTrace();
             responseMessage.setMessage(e.getMessage());
