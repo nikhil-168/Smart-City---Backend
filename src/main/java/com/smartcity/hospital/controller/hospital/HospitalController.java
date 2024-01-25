@@ -44,16 +44,16 @@ public class HospitalController {
         }
     }
 
-    @PostMapping("/hospital/image")
-    public ResponseEntity<?> addHospital(@RequestHeader("Authorization") String authorization,@RequestParam("id") int id, @RequestParam("image") MultipartFile image) {
-        try {
-            return hospitalService.addHospitalImage(authorization, id, image);
-        } catch (Exception e) {
-            e.printStackTrace();
-            responseMessage.setMessage(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMessage);
-        }
-    }
+//    @PostMapping("/hospital/image")
+//    public ResponseEntity<?> addHospital(@RequestHeader("Authorization") String authorization,@RequestParam("id") int id, @RequestParam("image") MultipartFile image) {
+//        try {
+//            return hospitalService.addHospitalImage(authorization, id, image);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            responseMessage.setMessage(e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMessage);
+//        }
+//    }
     
     @GetMapping("/hospital")
     public ResponseEntity<?> getHospitals(@RequestHeader("Authorization") String authorization) {

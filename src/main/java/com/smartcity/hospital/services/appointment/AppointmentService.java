@@ -81,6 +81,10 @@ public class AppointmentService {
                 responseMessage.setMessage("Booking is allowed only for citizen.....");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
             }
+            if (citizenDao.getCitizenByemail(email)==null) {
+            	responseMessage.setMessage("Citizen does not exist....");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
+            }
             appointment.setEmail(email);
             appointmentDao.save(appointment);
             String subject = "Booking confirmed - "+appointment.getName(); //this will be the subject of the email

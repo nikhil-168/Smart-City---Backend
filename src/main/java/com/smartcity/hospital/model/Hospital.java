@@ -39,10 +39,8 @@ public class Hospital {
     @Column(name = "Type")
     private String type;
 
-    @Lob
     @Column(name = "Image")
-    @JsonBackReference
-    private Blob img;
+    private String img;
 
     @Column(name = "Hours")
     private String hours;
@@ -50,18 +48,24 @@ public class Hospital {
     public Hospital() {
     }
 
-    public Hospital(String name, String address, String contactNumber, String servicesOffered, String type, Blob img,
-            String hours) {
-        this.name = name;
-        this.address = address;
-        this.contactNumber = contactNumber;
-        this.servicesOffered = servicesOffered;
-        this.type = type;
-        this.img = img;
-        this.hours = hours;
-    }
+    
+    
+    public Hospital(int id, String name, String address, String contactNumber, String servicesOffered, String type,
+			String img, String hours) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.contactNumber = contactNumber;
+		this.servicesOffered = servicesOffered;
+		this.type = type;
+		this.img = img;
+		this.hours = hours;
+	}
 
-    public int getId() {
+
+
+	public int getId() {
         return id;
     }
 
@@ -105,11 +109,11 @@ public class Hospital {
         this.type = type;
     }
 
-    public Blob getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(Blob img) {
+    public void setImg(String img) {
         this.img = img;
     }
 

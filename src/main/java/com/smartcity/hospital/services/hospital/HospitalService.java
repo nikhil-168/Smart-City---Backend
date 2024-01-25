@@ -65,34 +65,34 @@ public class HospitalService {
         
     }
 
-    public ResponseEntity<?> addHospitalImage(String authorization, int id, MultipartFile image) {
-        try {
-            String token = authorization.substring(7);
-
-            String email = jwtUtil.extractUsername(token); 
-            
-            if(citizenDao.getCitizenByemail(email)!=null) {
-                responseMessage.setMessage("You aren't authorised to add hospitals......");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
-            }
-            Hospital hospital = hospitalDao.getHospitalById(id);
-            if (hospital==null) {
-                responseMessage.setMessage("Hospital does not exist........");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
-            }
-            Session session = entityManager.unwrap(Session.class);
-            Blob hospitalImage = session.getLobHelper().createBlob(image.getInputStream(),image.getSize());
-            hospital.setImg(hospitalImage);
-            hospitalDao.save(hospital);
-            responseMessage.setMessage("Image added successfully....");
-            return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
-        } catch (Exception e) {
-            // TODO: handle exception
-            e.printStackTrace();
-            responseMessage.setMessage(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMessage);
-        }
-    }
+//    public ResponseEntity<?> addHospitalImage(String authorization, int id, MultipartFile image) {
+//        try {
+//            String token = authorization.substring(7);
+//
+//            String email = jwtUtil.extractUsername(token); 
+//            
+//            if(citizenDao.getCitizenByemail(email)!=null) {
+//                responseMessage.setMessage("You aren't authorised to add hospitals......");
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseMessage);
+//            }
+//            Hospital hospital = hospitalDao.getHospitalById(id);
+//            if (hospital==null) {
+//                responseMessage.setMessage("Hospital does not exist........");
+//                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+//            }
+//            Session session = entityManager.unwrap(Session.class);
+//            Blob hospitalImage = session.getLobHelper().createBlob(image.getInputStream(),image.getSize());
+//            hospital.setImg(hospitalImage);
+//            hospitalDao.save(hospital);
+//            responseMessage.setMessage("Image added successfully....");
+//            return ResponseEntity.status(HttpStatus.OK).body(responseMessage);
+//        } catch (Exception e) {
+//            // TODO: handle exception
+//            e.printStackTrace();
+//            responseMessage.setMessage(e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseMessage);
+//        }
+//    }
 
     public ResponseEntity<?> getHospitals(String authorization) {
         try {
@@ -101,15 +101,7 @@ public class HospitalService {
         		responseMessage.setMessage("Forbidden...");
         		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
         	}
-            List<Hospital> list = (List<Hospital>)hospitalDao.findAll();
-            List<HospitalResponse> response = new ArrayList<>();
-            for (int i=0;i<list.size();i++){
-                int blobLength = (int) list.get(i).getImg().length();
-                byte[] blobAsBytes = list.get(i).getImg().getBytes(1, blobLength);
-                response.add(new HospitalResponse(list.get(i).getId(), list.get(i).getName(), list.get(i).getAddress(), list.get(i).getContactNumber(), list.get(i).getServicesOffered(), list.get(i).getType(), blobAsBytes, list.get(i).getHours()));
-
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(response); 
+            return ResponseEntity.status(HttpStatus.OK).body(hospitalDao.findAll()); 
         } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
@@ -125,10 +117,7 @@ public class HospitalService {
                 responseMessage.setMessage("Hospital not found....");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
             }
-            int blobLength = (int) hospital.getImg().length();
-            byte[] blobAsBytes = hospital.getImg().getBytes(1, blobLength);
-            HospitalResponse hospitalResponse = new HospitalResponse(hospital.getId(), hospital.getName(), hospital.getAddress(), hospital.getContactNumber(), hospital.getServicesOffered(), hospital.getType(), blobAsBytes, hospital.getHours());
-            return ResponseEntity.status(HttpStatus.OK).body(hospitalResponse);
+            return ResponseEntity.status(HttpStatus.OK).body(hospital);
         } catch (Exception e) {
             e.printStackTrace();
             responseMessage.setMessage(e.getMessage());
